@@ -16,14 +16,12 @@ Doorkeeper.configure do
   # [GET] - oauth/applications
   admin_authenticator do
     if current_user
-      head  :forbidden unless current_user.admin?
+      head :forbidden unless current_user.admin?
+    elsif params[:access_token]
+      user = User.find(doorkeeper_token[:resource_owner_id])
+      sign_in 'user', user if user.admin?
     else
-      if params[:access_token]
-        user = User.find(doorkeeper_token[:resource_owner_id])
-        sign_in 'user', user if user.admin?
-      else
-        head :forbidden
-      end
+      head :forbidden
     end
   end
 
