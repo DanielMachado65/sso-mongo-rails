@@ -13,8 +13,9 @@ Doorkeeper.configure do
   end
 
   admin_authenticator do
-    if current_user
-      head :forbidden unless current_user.admin?
+    user = User.find(doorkeeper_token[:resource_owner_id])
+    if user
+      head :forbidden unless user.admin?
     else
       head :forbidden
     end

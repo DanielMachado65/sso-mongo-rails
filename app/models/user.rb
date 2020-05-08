@@ -42,6 +42,10 @@ class User
     true
   end
 
+  def admin?
+    true
+  end
+
   class << self
     def authenticate(email, password)
       user = User.find_for_authentication(email: email)
