@@ -249,7 +249,7 @@ DEPENDENCIES
   chromedriver-helper
   coffee-rails (~> 4.2)
   devise
-  doorkeeper
+  doorkeeper (~> 5.3.2)
   doorkeeper-mongodb
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
