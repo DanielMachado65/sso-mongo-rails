@@ -8,16 +8,22 @@ Doorkeeper.configure do
   # [POST] - oauth/token
   resource_owner_from_credentials do |_routes|
     unless params[:client_id].nil?
-      User.authenticate(params[:email], params[:password])
+      user = User.authenticate(params[:email], params[:password])
+      user if sign_in 'user', user
     end
   end
 
+  # [GET] - oauth/applications
   admin_authenticator do
-    user = User.find(doorkeeper_token[:resource_owner_id])
-    if user
-      head :forbidden unless user.admin?
+    if current_user
+      head  :forbidden unless current_user.admin?
     else
-      head :forbidden
+      if params[:access_token]
+        user = User.find(doorkeeper_token[:resource_owner_id])
+        sign_in 'user', user if user.admin?
+      else
+        head :forbidden
+      end
     end
   end
 

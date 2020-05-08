@@ -3,11 +3,15 @@
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Mongoid::Uuid
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+  devise :database_authenticatable,
+         :registerable,
+         :recoverable,
+         :rememberable,
+         :trackable,
+         :validatable
 
   ## Database authenticatable
   field :email,              type: String, default: ''
@@ -21,11 +25,26 @@ class User
   field :remember_created_at, type: Time
 
   ## Trackable
-  # field :sign_in_count,      type: Integer, default: 0
-  # field :current_sign_in_at, type: Time
-  # field :last_sign_in_at,    type: Time
-  # field :current_sign_in_ip, type: String
-  # field :last_sign_in_ip,    type: String
+  field :sign_in_count,      type: Integer, default: 0
+  field :current_sign_in_at, type: Time
+  field :current_sign_in_ip, type: String
+  field :last_sign_in_at,    type: Time
+  field :last_sign_in_ip,    type: String
+
+  ## Fields
+  field :username,           type: String
+  field :name,               type: String
+  field :admin,              type: Boolean
+
+  validates :email, presence: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
+
+  ## relationships
+  has_many  :access_grants, class_name: 'Doorkeeper::AccessGrant',
+                            foreign_key: :resource_owner_id,
+                            dependent: :delete_all
+
+  has_many  :access_tokens, class_name: 'Doorkeeper::AccessToken',
+                            foreign_key: :resource_o
 
   ## Confirmable
   # field :confirmation_token,   type: String
@@ -39,10 +58,6 @@ class User
   # field :locked_at,       type: Time
 
   def will_save_change_to_email?
-    true
-  end
-
-  def admin?
     true
   end
 
