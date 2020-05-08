@@ -4,7 +4,6 @@ class Api::V1::UserController < ApplicationController
   before_action :doorkeeper_authorize!
 
   def index
-    binding.pry
     render json: current_user
   end
 
