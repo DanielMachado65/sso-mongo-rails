@@ -6,7 +6,9 @@ module Api::V1
 
     # POST /resource/sign_in
     def create
-      binding.pry
+      service = Api::V1::UserService.create(params)
+
+      render json: service, status: service[:code] == 400 ? :bad_request : :created
     end
 
     # DELETE /resource/sign_out

@@ -16,10 +16,10 @@ module Api::V1
       render json: data, status: :bad_request
     end
 
-    def api_return(service, created = false)
-      return api_bad_request(service[:error]) if service[:code] == 400
+    def api_create(service)
+      code = service[:code] == 400 ? :bad_request : :created
 
-      created ? api_created(service) : api_success(service)
+      render json: data, status: code
     end
   end
 end
