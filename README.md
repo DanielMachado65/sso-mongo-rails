@@ -1,5 +1,7 @@
 # SSO Mongo Rails
 
+#### [HOWEVER]: this has to be only in applications with reliable high fidelity
+
 > Application SSO Mongo
 
 ## [POST] SIGN IN
