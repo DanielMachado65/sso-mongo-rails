@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-class Api::V1::UserController < ApplicationController
-  before_action :doorkeeper_authorize!
+module Api::V1
+  class UserController < ApiController
+    before_action :doorkeeper_authorize!
 
-  def me
-    render json: current_user
-  end
-
-  def sign_in
-    
+    def me
+      api_success(current_user)
+    end
   end
 end
