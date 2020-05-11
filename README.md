@@ -1,4 +1,4 @@
-# sso-mongo-rails
+# SSO Mongo Rails
 
 > Application SSO Mongo
 
